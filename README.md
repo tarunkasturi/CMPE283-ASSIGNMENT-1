@@ -60,7 +60,7 @@ Copy the modules installed in the make modules step into the required folder:
 sudo make INSTALL_MOD_STRIP=1 modules_install
 
 Build the kernal
-make istall
+make install
 
 Reboot the Ubuntu system
 sudo reboot
