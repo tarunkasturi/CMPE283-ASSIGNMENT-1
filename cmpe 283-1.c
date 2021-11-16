@@ -22,7 +22,7 @@
  * Represents a single capability (bit number and description).
  * Used by report_capability to output VMX capabilities.
  */
-struct capability_info {
+struct cap_information {
 	uint8_t bit;
 	const char *name;
 };
@@ -32,7 +32,7 @@ struct capability_info {
  * Pinbased capabilities
  * See SDM volume 3, section 24.6.1
  */
-struct capability_info pinbased[5] =
+struct cap_information pinbased[5] =
 {
 	{ 0, "External Interrupt Exiting" },
 	{ 3, "NMI Exiting" },
@@ -47,7 +47,7 @@ struct capability_info pinbased[5] =
  * Procbased Primary capabilities
  */
 
-struct capability_info procbased[21] =
+struct cap_information procbased[21] =
 {
 	{ 2, "Interrupt-window exiting" },
 	{ 3, "Use TSC offsetting" },
@@ -77,7 +77,7 @@ struct capability_info procbased[21] =
  * Procbased secondary capabilities
  */
 
-struct capability_info procbased2[27] =
+struct cap_information procbased2[27] =
 {
 	{0, "Virtualize APIC accesses"},
 	{1, "Enable EPT"},
@@ -112,7 +112,7 @@ struct capability_info procbased2[27] =
 /*
  * exit control capabilities
  */
-struct capability_info exitctl[14] =
+struct cap_information exitctl[14] =
 {
 	{2, "Save debug controls"},
 	{9, "Host address-space size"},
@@ -135,7 +135,7 @@ struct capability_info exitctl[14] =
  * entry control capabilities
  */
 
-struct capability_info entryctl[12] =
+struct cap_information entryctl[12] =
 {
 	{2, "Load debug controls"},
 	{9, "IA-32e mode guest"},
@@ -154,23 +154,23 @@ struct capability_info entryctl[12] =
 
 
 /*
- * report_capability
+ * report_cap
  *
  * Reports capabilities present in 'cap' using the corresponding MSR values
  * provided in 'lo' and 'hi'.
  *
  * Parameters:
- *  cap: capability_info structure for this feature
+ *  cap: cap_information structure for this feature
  *  len: number of entries in 'cap'
  *  lo: low 32 bits of capability MSR value describing this feature
  *  hi: high 32 bits of capability MSR value describing this feature
  */
 void
-report_capability(struct capability_info *cap, uint8_t len, uint32_t lo,
+report_cap(struct cap_information *cap, uint8_t len, uint32_t lo,
     uint32_t hi)
 {
 	uint8_t i;
-	struct capability_info *c;
+	struct cap_information *c;
 	char msg[MAX_MSG];
 
 	memset(msg, 0, sizeof(msg));
@@ -199,7 +199,7 @@ detect_vmx_features(void)
 	rdmsr(IA32_VMX_PINBASED_CTLS, lo, hi);
 	pr_info("Pinbased Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(pinbased, 5, lo, hi);
+	report_cap(pinbased, 5, lo, hi);
 
 
 
@@ -207,28 +207,28 @@ detect_vmx_features(void)
 	rdmsr(IA32_VMX_PROCBASED_CTLS, lo, hi);
 	pr_info("Procbased Primary Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(procbased, 21, lo, hi);
+	report_cap(procbased, 21, lo, hi);
 
 
 
 	rdmsr(IA32_VMX_PROCBASED_CTLS2, lo, hi);
 	pr_info("Procbased Secondary Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(procbased2, 27, lo, hi);
+	report_cap(procbased2, 27, lo, hi);
 	
 	
 	/* Exit controls */
 	rdmsr(IA32_VMX_EXIT_CTLS, lo, hi);
 	pr_info("Exit Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(exitctl, 14, lo, hi);
+	report_cap(exitctl, 14, lo, hi);
 	
 	
 	/* Entry controls */
 	rdmsr(IA32_VMX_ENTRY_CTLS, lo, hi);
 	pr_info("Entry Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(entryctl, 12, lo, hi);
+	report_cap(entryctl, 12, lo, hi);
 
 }
 
