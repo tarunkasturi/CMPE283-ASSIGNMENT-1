@@ -83,4 +83,7 @@ sudo rmmod ./cmpe283-1.ko
 
 We can verify the outout using the following command:
 dmesg
+![cmpe-283-assignment-1-part-1](https://user-images.githubusercontent.com/78890615/142965146-466aa47c-aff3-41c6-bd6e-ed4f3a274f81.jpeg)
+![cmpe-283-assignment-1](https://user-images.githubusercontent.com/78890615/142965154-51ed3937-03bc-49b3-ab22-80bb9c435638.jpeg)
+
 
